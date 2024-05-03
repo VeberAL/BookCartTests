@@ -1,5 +1,7 @@
 package tests;
 
+import helpers.LoginExt;
+import helpers.WithLogin;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Cookie;
@@ -11,39 +13,12 @@ import static io.restassured.http.ContentType.JSON;
 import static java.lang.String.format;
 
 public class BookCartTests extends TestBase {
+    @WithLogin
     @Test
     void addBookToCollectionTest() {
-        String authData = "{\"userName\":\"VeberAL\",\"password\":\"12832156aA!\"}";
-        //авторизация
-        Response authResponse = given()
-                .log().uri()
-                .log().method()
-                .log().body()
-                .contentType(JSON)
-                .body(authData)
-                .when()
-                .post("/Account/v1/Login")
-                .then()
-                .log().status()
-                .log().body()
-                .statusCode(200)
-                .extract().response();
-        //удаление всех книг
-        given()
-                .log().uri()
-                .log().method()
-                .log().body()
-                .contentType(JSON)
-                .header("Authorization", "Bearer " + authResponse.path("token"))
-                .queryParams("UserId", authResponse.path("userId"))
-                .when()
-                .delete("/BookStore/v1/Books")
-                .then()
-                .log().status()
-                .log().body()
-                .statusCode(204);
-//добавление книги
+        //добавление книги
         String isbn = "9781449337711";
+        Response authResponse = LoginExt.Authorization();
         String bookData = format("{\"userId\":\"%s\",\"collectionOfIsbns\":[{\"isbn\":\"%s\"}]}",
                 authResponse.path("userId"), isbn);
 
@@ -60,7 +35,7 @@ public class BookCartTests extends TestBase {
                 .log().status()
                 .log().body()
                 .statusCode(201);
-//удаление книги
+        //удаление книги
         String isbnDel = "9781449337711";
         String deleteBookData = format("{\"userId\":\"%s\",\"isbn\":\"%s\"}",
                 authResponse.path("userId"), isbnDel);
