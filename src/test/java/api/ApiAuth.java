@@ -2,6 +2,7 @@ package api;
 
 import io.qameta.allure.Step;
 import models.LoginBodyModel;
+import models.ResLoginModel;
 
 import static io.restassured.RestAssured.given;
 import static specs.Spec.loginRequestSpec;
@@ -9,7 +10,7 @@ import static specs.Spec.loginResponseSpec;
 
 public class ApiAuth {
     @Step("Авторизация пользователя.")
-    public static LoginBodyModel successfulAuthorisation(String login, String password) {
+    public static ResLoginModel successfulAuthorisation(String login, String password) {
 
         LoginBodyModel userCredentials = new LoginBodyModel();
         userCredentials.setUserName(login);
@@ -22,6 +23,6 @@ public class ApiAuth {
                         .post()
                         .then()
                         .spec(loginResponseSpec)
-                        .extract().as(LoginBodyModel.class);
+                        .extract().as(ResLoginModel.class);
     }
 }
