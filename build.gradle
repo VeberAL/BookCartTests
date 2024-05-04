@@ -37,19 +37,24 @@ dependencies {
     )
 }
 
-
-test {
+tasks.withType(Test) {
     useJUnitPlatform()
     systemProperties(System.getProperties())
-}
 
-
-tasks.register('tests', Test) {
     testLogging {
-        events "passed", "skipped", "failed", "standardOut", "standardError"
-        exceptionFormat "full"
+        lifecycle {
+            events "started", "skipped", "failed", "standard_error", "standard_out"
+            exceptionFormat "short"
+        }
     }
+}
+task demoqa_test(type: Test) {
     useJUnitPlatform {
-        includeTags("tests")
+        includeTags("demoqa")
+    }
+}
+task smoke_test(type: Test) {
+    useJUnitPlatform {
+        includeTags("smoke")
     }
 }
