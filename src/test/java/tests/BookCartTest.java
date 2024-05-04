@@ -1,70 +1,46 @@
 package tests;
 
-import helpers.LoginExt;
-import helpers.WithLogin;
-import io.restassured.response.Response;
-import models.RequestAddBookModel;
-import models.RequestDeleteBookModel;
+import data.DataTest;
+import models.ResLoginModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Cookie;
+import pages.ProfilePage;
 
-import java.util.Collections;
-
+import static api.ApiAuth.successfulAuthorisation;
+import static api.ApiBook.bookAdd;
+import static api.ApiBook.bookDelete;
+import static com.codeborne.selenide.Configuration.baseUrl;
 import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static io.qameta.allure.Allure.step;
-import static io.restassured.RestAssured.given;
-import static specs.Spec.*;
 
 public class BookCartTest extends TestBase {
+    ProfilePage profilePage = new ProfilePage();
+    DataTest dataTest = new DataTest();
 
+    @DisplayName("Delete book from user profile")
     @Test
-    @WithLogin
     @Tag("demoqa")
-    @DisplayName("Тест на удаление книги из корзины.")
-    void addAndDeleteBookToCollectionTest() {
-        RequestAddBookModel bookData = new RequestAddBookModel();
-        RequestAddBookModel.CollectionOfIsbns collectionOfIsbns = new RequestAddBookModel.CollectionOfIsbns();
-        RequestDeleteBookModel deleteBookData = new RequestDeleteBookModel();
+//    @WithLogin
+    void bookDeleteTest() {
+        ResLoginModel loginResponse = successfulAuthorisation(dataTest.login, dataTest.password);
+        bookDelete(loginResponse.getUserId(), loginResponse.getToken());
+        bookAdd(dataTest.bookId, loginResponse.getUserId(), loginResponse.getToken());
+        bookDelete(loginResponse.getUserId(), loginResponse.getToken());
 
-        Response authResponse = LoginExt.Authorization();
-        String userID = authResponse.path("userId"),
-                token = authResponse.path("token"),
-                isbn = "9781449337711";
+        step("Передача cookies.", () -> {
+            open(baseUrl + "/favicon.png");
+            getWebDriver().manage().addCookie(new Cookie("userID", loginResponse.getUserId()));
+            getWebDriver().manage().addCookie(new Cookie("expires", loginResponse.getExpires()));
+            getWebDriver().manage().addCookie(new Cookie("token", loginResponse.getToken()));
+        });
 
-        deleteBookData.setUserId(userID);
-        deleteBookData.setIsbn(isbn);
-        bookData.setUserId(userID);
-        collectionOfIsbns.setIsbn(isbn);
-        bookData.setCollectionOfIsbns(Collections.singletonList(collectionOfIsbns));
+        step("Проверка удаления книги из корзины профиля пользователя.", () -> {
+            open(baseUrl + "/profile");
+            profilePage.emptyTableCheck();
+        });
 
-        step("Удаление всех книг из корзины", () ->
-                given(userRequestSpec)
-                        .header("Authorization", "Bearer " + token)
-                        .queryParams("UserId", userID)
-                        .when()
-                        .delete("/BookStore/v1/Books")
-                        .then()
-                        .spec(deleteBookResponseSpec));
-
-        step("Добавление книги в корзину", () ->
-                given(userRequestSpec)
-                        .header("Authorization", "Bearer " + token)
-                        .body(bookData)
-                        .when()
-                        .post("/BookStore/v1/Books")
-                        .then()
-                        .spec(addBookResponseSpec));
-
-        step("Удаление книги из корзины", () ->
-                given(userRequestSpec)
-                        .header("Authorization", "Bearer " + token)
-                        .body(deleteBookData)
-                        .when()
-                        .delete("/BookStore/v1/Book")
-                        .then()
-                        .spec(deleteBookResponseSpec));
-        step("Открытие страницы профиля", () ->
-                open("/profile"));
     }
 }
