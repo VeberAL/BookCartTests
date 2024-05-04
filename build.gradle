@@ -36,15 +36,7 @@ dependencies {
             "io.qameta.allure:allure-rest-assured:$allureVersion"
     )
 }
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-}
-compileJava {
-    options.encoding = 'UTF-8'
-}
-compileTestJava {
-    options.encoding = 'UTF-8'
-}
+
 
 test {
     useJUnitPlatform()

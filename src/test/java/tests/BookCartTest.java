@@ -5,6 +5,7 @@ import helpers.WithLogin;
 import io.restassured.response.Response;
 import models.RequestAddBookModel;
 import models.RequestDeleteBookModel;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -15,8 +16,10 @@ import static io.restassured.RestAssured.given;
 import static specs.Spec.*;
 
 public class BookCartTest extends TestBase {
-    @WithLogin
+
     @Test
+    @WithLogin
+    @DisplayName("Тест на удаление книги из корзины.")
     void addAndDeleteBookToCollectionTest() {
         RequestAddBookModel bookData = new RequestAddBookModel();
         RequestAddBookModel.CollectionOfIsbns collectionOfIsbns = new RequestAddBookModel.CollectionOfIsbns();
