@@ -3,27 +3,33 @@ plugins {
     id 'io.qameta.allure' version '2.11.2'
     id "io.freefair.lombok" version "6.0.0-m2"
 }
+group 'org.example'
+version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
 
 def allureVersion = "2.25.0"
-
 allure {
     report {
-        version.set(allureVersion)
+        version.set("2.25.0")
     }
     adapter {
         aspectjWeaver.set(true)
         frameworks {
             junit5 {
-                adapterVersion.set(allureVersion)
+                adapterVersion.set("2.25.0")
             }
         }
     }
 }
-
+compileJava {
+    options.encoding = 'UTF-8'
+}
+compileTestJava {
+    options.encoding = 'UTF-8'
+}
 dependencies {
     testImplementation(
 
