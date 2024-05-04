@@ -1,7 +1,7 @@
 package helpers;
 
 import data.DataTest;
-import models.LoginBodyModel;
+import models.ResLoginModel;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
@@ -11,7 +11,7 @@ import static io.qameta.allure.Allure.step;
 public class LoginExt implements BeforeEachCallback {
 
 
-    private static LoginBodyModel authorizationResponse;
+    private static ResLoginModel authorizationResponse;
 
     public void beforeEach(ExtensionContext context) {
         DataTest dataTest = new DataTest();
@@ -20,7 +20,7 @@ public class LoginExt implements BeforeEachCallback {
 
     }
 
-    public static LoginBodyModel Authorization() {
+    public static ResLoginModel Authorization() {
         return authorizationResponse;
 
     }
