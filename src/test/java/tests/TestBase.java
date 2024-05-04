@@ -34,7 +34,7 @@ public class TestBase {
 
     @AfterEach
     public void configurationAfter() {
-        screenshotAs("Скриншот");
+        screenshotAs("Screenshot");
         pageSource();
         browserConsoleLogs();
         addVideo();
