@@ -20,7 +20,7 @@ public class BookCartTest extends TestBase {
     ProfilePage profilePage = new ProfilePage();
     DataTest dataTest = new DataTest();
 
-    @DisplayName("Delete book from user profile")
+    @DisplayName("Тест на проверку удаления книги из корзины профиля пользователя.")
     @Test
     @Tag("demoqa")
 //    @WithLogin
