@@ -18,7 +18,7 @@ import static io.qameta.allure.Allure.step;
 
 public class BookCartTest extends TestBase {
     ProfilePage profilePage = new ProfilePage();
-    DataTest dataTest = new DataTest();
+    public static DataTest dataTest = new DataTest();
 
     @DisplayName("Тест на проверку удаления книги из корзины профиля пользователя.")
     @Test
@@ -28,7 +28,6 @@ public class BookCartTest extends TestBase {
         ResLoginModel loginResponse = successfulAuthorisation(dataTest.login, dataTest.password);
         bookDelete(loginResponse.getUserId(), loginResponse.getToken());
         bookAdd(dataTest.bookId, loginResponse.getUserId(), loginResponse.getToken());
-        bookDelete(loginResponse.getUserId(), loginResponse.getToken());
 
         step("Передача cookies.", () -> {
             open(baseUrl + "/favicon.png");
@@ -36,11 +35,11 @@ public class BookCartTest extends TestBase {
             getWebDriver().manage().addCookie(new Cookie("expires", loginResponse.getExpires()));
             getWebDriver().manage().addCookie(new Cookie("token", loginResponse.getToken()));
         });
+        step("Удаление книги из корзины профиля пользователя.", () ->
+                profilePage.bookCheck());
+        step("Проверка удаления книги из корзины профиля пользователя.", () ->
+                profilePage.emptyTableCheck());
 
-        step("Проверка удаления книги из корзины профиля пользователя.", () -> {
-            open(baseUrl + "/profile");
-            profilePage.emptyTableCheck();
-        });
 
     }
 }
