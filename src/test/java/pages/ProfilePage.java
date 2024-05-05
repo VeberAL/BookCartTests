@@ -3,6 +3,7 @@ package pages;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import tests.BookCartTest;
 
 import static com.codeborne.selenide.Condition.text;
@@ -11,18 +12,28 @@ import static com.codeborne.selenide.Configuration.baseUrl;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import static helpers.LoginExt.authorizationResponse;
 
 public class ProfilePage {
     private SelenideElement noDataGridElement = $(".rt-noData");
+    private SelenideElement userNameElement = $("#userName-value");
     private SelenideElement tBodyElement = $(".rt-tbody");
     private SelenideElement texRightButtonElement = $(".text-right.button.di");
     private SelenideElement modalFooterElement = $(".modal-footer");
 
+    @Step("Проверка удаления книги из корзины профиля пользователя.")
     public void emptyTableCheck() {
 
         noDataGridElement.shouldHave(Condition.text("No rows found"));
     }
 
+    @Step("Проверка успешной регистрации.")
+    public void authCheck() {
+        open(baseUrl + "/profile");
+        userNameElement.shouldHave(text(authorizationResponse.getUserName())).shouldBe(visible);
+    }
+
+    @Step("Проверка наличия книги и её удаление из корзины профиля пользователя.")
     public void bookCheck() {
         IsbnName();
         open(baseUrl + "/profile");

@@ -1,6 +1,5 @@
 package api;
 
-import io.qameta.allure.Step;
 import models.LoginBodyModel;
 import models.ResLoginModel;
 
@@ -9,7 +8,7 @@ import static specs.Spec.loginRequestSpec;
 import static specs.Spec.loginResponseSpec;
 
 public class ApiAuth {
-    @Step("Авторизация пользователя.")
+
     public static ResLoginModel successfulAuthorisation(String login, String password) {
 
         LoginBodyModel userCredentials = new LoginBodyModel();
