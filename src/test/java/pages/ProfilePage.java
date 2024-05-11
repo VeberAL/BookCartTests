@@ -35,7 +35,7 @@ public class ProfilePage {
 
     @Step("Проверка наличия книги и её удаление из корзины профиля пользователя.")
     public void bookCheck() {
-        IsbnName();
+        isbnName();
         open(baseUrl + "/profile");
         tBodyElement.shouldHave(text(ProfilePage.bookName)).shouldBe(visible);
         texRightButtonElement.$(byText("Delete All Books")).click();
@@ -45,7 +45,7 @@ public class ProfilePage {
 
     public static String bookName;
 
-    public static String IsbnName() {
+    public static String isbnName() {
 
         return switch (BookCartTest.dataTest.bookId) {
             case "9781491904244" -> bookName = "You Don't Know JS";
