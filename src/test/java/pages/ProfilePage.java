@@ -8,7 +8,6 @@ import tests.BookCartTest;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Configuration.baseUrl;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
@@ -22,25 +21,39 @@ public class ProfilePage {
     private SelenideElement modalFooterElement = $(".modal-footer");
 
     @Step("Проверка удаления книги из корзины профиля пользователя.")
-    public void emptyTableCheck() {
+    public ProfilePage emptyTableCheck() {
 
         noDataGridElement.shouldHave(Condition.text("No rows found"));
+        return this;
     }
 
     @Step("Проверка успешной регистрации.")
-    public void authCheck() {
-        open(baseUrl + "/profile");
+    public ProfilePage authCheck() {
+        open("/profile");
         userNameElement.shouldHave(text(authorizationResponse.getUserName())).shouldBe(visible);
+        return this;
     }
 
-    @Step("Проверка наличия книги и её удаление из корзины профиля пользователя.")
-    public void bookCheck() {
+    @Step("Открытие страницы профиля пользователя.")
+    public ProfilePage profileOpen() {
         isbnName();
-        open(baseUrl + "/profile");
+        open("/profile");
         tBodyElement.shouldHave(text(ProfilePage.bookName)).shouldBe(visible);
+        return this;
+    }
+
+    @Step("Проверка наличия книги в корзине профиля пользователя.")
+    public ProfilePage bookCheck() {
+        tBodyElement.shouldHave(text(ProfilePage.bookName)).shouldBe(visible);
+        return this;
+    }
+
+    @Step("Удаление книги из корзины профиля пользователя.")
+    public ProfilePage ibsnBookDelete() {
         texRightButtonElement.$(byText("Delete All Books")).click();
         modalFooterElement.$(byText("OK")).click();
         Selenide.confirm();
+        return this;
     }
 
     public static String bookName;

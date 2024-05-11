@@ -8,7 +8,6 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Cookie;
 
 import static api.ApiAuth.successfulAuthorisation;
-import static com.codeborne.selenide.Configuration.baseUrl;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
@@ -22,7 +21,7 @@ public class LoginExt implements BeforeEachCallback {
         DataTest dataTest = new DataTest();
         authorizationResponse = successfulAuthorisation(dataTest.login, dataTest.password);
 
-        open(baseUrl + "/favicon.png");
+        open("/favicon.png");
         getWebDriver().manage().addCookie(new Cookie("userID", authorizationResponse.getUserId()));
         getWebDriver().manage().addCookie(new Cookie("expires", authorizationResponse.getExpires()));
         getWebDriver().manage().addCookie(new Cookie("token", authorizationResponse.getToken()));

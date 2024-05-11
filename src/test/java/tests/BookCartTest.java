@@ -22,8 +22,11 @@ public class BookCartTest extends TestBase {
     void bookDeleteTest() {
         bookDelete(authorizationResponse.getUserId(), authorizationResponse.getToken());
         bookAdd(dataTest.bookId, authorizationResponse.getUserId(), authorizationResponse.getToken());
-        profilePage.authCheck();
-        profilePage.bookCheck();
-        profilePage.emptyTableCheck();
+        profilePage
+                .authCheck()
+                .profileOpen()
+                .bookCheck()
+                .ibsnBookDelete()
+                .emptyTableCheck();
     }
 }
