@@ -28,5 +28,6 @@ public class BookCartTest extends TestBase {
                 .bookCheck()
                 .ibsnBookDelete()
                 .emptyTableCheck();
+
     }
 }
