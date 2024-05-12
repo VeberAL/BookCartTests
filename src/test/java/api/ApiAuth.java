@@ -19,7 +19,7 @@ public class ApiAuth {
                 given(loginRequestSpec)
                         .body(userCredentials)
                         .when()
-                        .post()
+                        .post("/Account/v1/Login")
                         .then()
                         .spec(loginResponseSpec)
                         .extract().as(ResLoginModel.class);

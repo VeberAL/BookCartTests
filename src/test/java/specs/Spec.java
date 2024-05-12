@@ -17,8 +17,7 @@ public class Spec extends TestBase {
             .log().uri()
             .log().method()
             .log().body()
-            .contentType(JSON)
-            .basePath("/Account/v1/Login");
+            .contentType(JSON);
 
     public static ResponseSpecification loginResponseSpec = new ResponseSpecBuilder()
             .log(STATUS)
@@ -26,27 +25,18 @@ public class Spec extends TestBase {
             .expectStatusCode(200)
             .build();
 
-    public static RequestSpecification bookAddSpec = with()
+    public static RequestSpecification bookAddAndDeleteSpec = with()
             .filter(CustomAllureListener.withCustomTemplates())
             .log().uri()
             .log().method()
             .log().body()
-            .contentType(JSON)
-            .basePath("/BookStore/v1/Books");
+            .contentType(JSON);
 
     public static ResponseSpecification bookAddResponseSpec = new ResponseSpecBuilder()
             .log(STATUS)
             .log(BODY)
             .expectStatusCode(201)
             .build();
-
-    public static RequestSpecification bookDeleteRequestSpec = with()
-            .filter(CustomAllureListener.withCustomTemplates())
-            .log().uri()
-            .log().method()
-            .log().body()
-            .contentType(JSON)
-            .basePath("/BookStore/v1/Books");
 
     public static ResponseSpecification bookDeleteResponseSpec = new ResponseSpecBuilder()
             .log(STATUS)

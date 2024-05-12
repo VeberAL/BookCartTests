@@ -24,11 +24,11 @@ public class ApiBook {
         bookAddingInfo.setCollectionOfIsbns(isbn);
         bookAddingInfo.setUserId(userId);
 
-        given(bookAddSpec)
+        given(bookAddAndDeleteSpec)
                 .header("Authorization", "Bearer " + token)
                 .body(bookAddingInfo)
                 .when()
-                .post()
+                .post("/BookStore/v1/Books")
                 .then()
                 .spec(bookAddResponseSpec);
     }
@@ -36,11 +36,11 @@ public class ApiBook {
     @Step("Удаление всех книг из корзины профиля пользователя.")
     public static void bookDelete(String userId, String token) {
 
-        given(bookDeleteRequestSpec)
+        given(bookAddAndDeleteSpec)
                 .header("Authorization", "Bearer " + token)
                 .param("UserId", userId)
                 .when()
-                .delete()
+                .delete("/BookStore/v1/Books")
                 .then()
                 .spec(bookDeleteResponseSpec);
     }
